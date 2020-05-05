@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import List from './components/List'
-import Form from './components/Form'
+import List from './components/TestPlan/List'
+import Form from './components/TestPlan/Form'
 import './index.css';
 
 const App = () => {
