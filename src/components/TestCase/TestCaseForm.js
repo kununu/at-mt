@@ -6,12 +6,12 @@ import axios from 'axios'
 const TestCaseForm = (props) => {
   const {testCase} = props
   const[state, setNewTestCase] = useState({
-    name: '',
-    description: '',
-    'test steps': '',
-    'test data': '',
-    'e2e link': '',
-    'jira link': ''
+    name: testCase.name || '',
+    description: testCase.name || '',
+    'test steps': testCase.name || '',
+    'test data': testCase.name || '',
+    'e2e link': testCase.name || '',
+    'jira link': testCase.name || ''
   })
 
   const addNewTestCase = event => {
