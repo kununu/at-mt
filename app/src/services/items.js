@@ -1,8 +1,14 @@
 import axios from 'axios'
 const baseUrl = '/api/projects'
 
+let axiosDefaults = require('axios/lib/defaults');
+
+if (process.env.NODE_ENV === 'development') {
+     axiosDefaults.baseURL = 'http://localhost:3001/'
+}
+
 const getAll = async () => {
-    const request = this.axios.get(baseUrl)
+    const request = axios.get(baseUrl)
     const response = await request;
     return response.data;
 }
