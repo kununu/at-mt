@@ -14,7 +14,11 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start:server": "cd server && npm run start",
+    "start:app": "cd app && npm run start",
+    "deploy": "git push heroku master",
+    "build": "cd server && rm -rf build && cd ../app && rm -rf build && npm run build && cp -r build ../server",
+    "deploy:full": "npm run build && git add . && git commit -m frontendbuild && git push && npm run deploy",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "server": "json-server -p3001 --watch db.json"
