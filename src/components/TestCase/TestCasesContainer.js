@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import TestCase from './TestCase'
 import TestCaseForm from './TestCaseForm'
 import TestCaseList from './TestCaseList'
+import './testCase.css'
 
 const TestCaseContainer = () => {
   const [state, setState] = useState({
@@ -21,7 +22,8 @@ const TestCaseContainer = () => {
   switch (state.page) {
     case 'form':
       return [<TestCaseForm
-        viewList={() => viewComponent('list')} />]
+        viewList={() => viewComponent('list')}
+        testCase={state.testCase}/>]
     case 'list':
       return [<TestCaseList
         viewForm={viewComponent}

@@ -23,7 +23,6 @@ const TestCase = (props) => {
           <Button
             onClick={props.viewList}
             variant='primary'
-            style={{float:'right'}}
           >Back</Button>
           <Card.Title >
             <h1>{testCase.id}. {testCase.name} </h1>

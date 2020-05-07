@@ -4,7 +4,7 @@ import Card from 'react-bootstrap/Card'
 import axios from 'axios'
 
 const TestCaseForm = (props) => {
-  const placeholder = props.testCase
+  const {testCase} = props
   const[state, setNewTestCase] = useState({
     name: '',
     description: '',
@@ -47,7 +47,7 @@ const TestCaseForm = (props) => {
           <Form.Label>{stateKey}</Form.Label>
           <Form.Control
             onChange={handleChange}
-            placeholder={`add ${stateKey}`}
+            placeholder={testCase[stateKey] || `add ${stateKey}`}
             name={stateKey}
             value={state[stateKey]}
             required
@@ -60,12 +60,10 @@ const TestCaseForm = (props) => {
   return (
     <Card border={'primary'}>
       <Card.Header>
-        <Card.Title style={{display:'inline'}}>Create a new test case</Card.Title>
+        <Card.Title>Create a new test case</Card.Title>
         <Button
           version='primary'
-          style={{float:'right'
-        }}
-        onClick={props.viewList}
+          onClick={props.viewList}
         >Back to list</Button>
       </Card.Header>
       <Card.Body>
