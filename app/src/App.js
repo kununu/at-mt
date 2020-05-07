@@ -1,5 +1,5 @@
 import React from 'react';
-import List from './components/TestPlan/TestPlanListList'
+import List from './components/TestPlan/TestPlanList'
 import Form from './components/TestPlan/TestPlanForm'
 import './index.css';
 
