@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
@@ -35,3 +36,6 @@ If you want to deploy whole application then run deploy:full
 ### `npm run deploy:full`
 
 This will create production build of application, and deploy everything to heroku.
+=======
+TBD!
+>>>>>>> 853bd5b... many changes
