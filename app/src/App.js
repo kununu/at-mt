@@ -1,16 +1,19 @@
 import React from 'react';
-import List from './components/TestPlan/TestPlanList';
-import Form from './components/TestPlan/TestPlanForm';
+import List from './components/TestPlan/TestPlanListList'
+import Form from './components/TestPlan/TestPlanForm'
+import './index.css';
+
 
 const App = () => {
-  return (
-    <div>
+    return (
       <div>
-        <Form />
-        <List />
+        <div>
+          <Form />
+          <List />
+        </div>
       </div>
-    </div>
-  )
-}
+    )
+  }
 
-export default App;
+
+  export default App
