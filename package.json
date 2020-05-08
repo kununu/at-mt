@@ -5,12 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "NODE_ENV=production node index.js",
+    "start:app": "cd application && npm run start",
     "dev": "NODE_ENV=development nodemon index.js",
     "deploy": "npm test && git push heroku master",
-    "build:frontend": "rm -rf build && cd ../app && npm run build && cp -r build ../server",
-    "deploy:full": "npm run build:frontend && git add . && git commit -m frontendbuild && git push && npm run deploy",
+    "build": "rm -rf build && cd ../application && npm run build && cp -r build ../",
+    "deploy:full": "npm run build && git add . && git commit -m frontendbuild && git push && npm run deploy",
     "test": "NODE_ENV=test jest --verbose -runInBand",
-    "logs:prod": "heroku logs --tail"
+    "logs": "heroku logs --tail"
   },
   "author": "",
   "license": "ISC",
