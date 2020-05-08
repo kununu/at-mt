@@ -1,19 +1,22 @@
 import React from 'react';
-import List from './components/TestPlan/TestPlanList'
-import Form from './components/TestPlan/TestPlanForm'
-import './index.css';
-
+import Container from 'react-bootstrap/Container';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import TestCaseContainer from './components/TestCase/TestCasesContainer'
+import TestCase from './components/TestCase/TestCase';
+import TestPlanForm from './components/TestPlan/TestPlanForm'
+import TestPlanList from './components/TestPlan/TestPlanList'
 
 const App = () => {
-    return (
-      <div>
+  return (
+      <Container>
         <div>
-          <Form />
-          <List />
+          <TestPlanForm />
+          <TestPlanList />
         </div>
-      </div>
-    )
-  }
+        <br />
+        <TestCaseContainer />
+      </Container>
+  )
+}
 
-
-  export default App
+export default App;

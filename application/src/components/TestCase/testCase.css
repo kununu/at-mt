@@ -1,0 +1,10 @@
+Button {
+  float: right;
+  margin: 10px;
+}
+ListGroup.Item {
+  display: inline;
+}
+Card.Title {
+  display: inline;
+}
