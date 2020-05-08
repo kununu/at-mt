@@ -1,17 +1,17 @@
 import React, {useState} from 'react'
 import {Button, Form} from 'react-bootstrap'
 import Card from 'react-bootstrap/Card'
-import axios from 'axios'
+import itemsService from '../../services/testCasesController'
 
 const TestCaseForm = (props) => {
   const {testCase} = props
   const[state, setNewTestCase] = useState({
     name: testCase.name || '',
-    description: testCase.name || '',
-    'test steps': testCase.name || '',
-    'test data': testCase.name || '',
-    'e2e link': testCase.name || '',
-    'jira link': testCase.name || ''
+    description: testCase.short_description || '',
+    test_steps: testCase.test_steps || '',
+    test_data: testCase.test_data || '',
+    e2e_link: testCase.e2e_link || '',
+    jira_link: testCase.jira_link || ''
   })
 
   const addNewTestCase = event => {
@@ -20,18 +20,43 @@ const TestCaseForm = (props) => {
       name: state.name,
       date: new Date().toDateString(),
       description: state.description,
-      'test steps': state['test steps'],
-      'test data': state['test data'],
-      'e2e link': state['e2e link'],
-      'jira link': state['jira link']
-
+      test_steps: state.test_steps,
+      test_data: state.test_data,
+      e2e_link: state.e2e_link,
+      jira_link: state.jira_link
     }
-    axios
-      .post('http://localhost:3001/test-cases', testcase)
+    itemsService
+      .create(testcase)
       .then(response => {
         console.log(response.data)
       })
       .then(props.viewList)
+      .catch(error => {
+        console.log('Failed to create test case')
+      })
+  }
+
+  const updateTestCase = event => {
+    event.preventDefault();
+    const testcase = {
+      name: state.name,
+      date: new Date().toDateString(),
+      description: state.description,
+      test_steps: state.test_steps,
+      test_data: state.test_data,
+      e2e_link: state.e2e_link,
+      jira_link: state.jira_link
+    }
+    itemsService
+      .update(testCase.id, testcase)
+      .then(props.viewList)
+      .catch(error => {
+        console.log(`Failed to update test case for ${testCase.id}`)
+      })
+  }
+
+  const handleSubmit = () => {
+    return (!props) ? addNewTestCase : updateTestCase
   }
 
   const handleChange =  e => {
@@ -47,7 +72,7 @@ const TestCaseForm = (props) => {
           <Form.Label>{stateKey}</Form.Label>
           <Form.Control
             onChange={handleChange}
-            placeholder={testCase[stateKey] || `add ${stateKey}`}
+            placeholder={`add ${stateKey}`}
             name={stateKey}
             value={state[stateKey]}
             required

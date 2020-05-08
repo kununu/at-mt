@@ -1,19 +1,35 @@
-import axios from 'axios'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
+import itemsService from '../../services/testCasesController'
 import ListGroup from 'react-bootstrap/ListGroup'
 import React, {useState, useEffect} from 'react'
+
 
 
 const TestCaseList = (props) => {
     const [items,  setItems] = useState([])
     useEffect(() => {
-      axios
-        .get('http://localhost:3001/test-cases')
-        .then(response => {
-          setItems(response.data)
+      itemsService
+        .getAll()
+        .then(initialItems => {
+          setItems(initialItems)
+        })
+        .catch(error => {
+            console.log('Fail to load test cases')
         })
     }, [setItems])
+
+    const removeItem = (id) => {
+        itemsService
+            .remove(id)
+            .then(response => {
+                console.log(response)
+            })
+            .then(() => window.location.reload(false))
+            .catch(error => {
+                console.log('Failed to remove test case')
+            })
+    }
     return (
         <Card border='primary'>
             <Card.Header>
@@ -37,7 +53,9 @@ const TestCaseList = (props) => {
                                     onClick={() => props.viewForm('form', items.id, items)}
                                     version='primary'
                                 >Edit</Button>
-                                <Button version='primary'>
+                                <Button
+                                    version='primary'
+                                    onClick={()=>removeItem(items.id)}>
                                     Delete
                                 </Button>
                             </ListGroup.Item>

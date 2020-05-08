@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import itemsService from '../../services/items'
+import itemsService from '../../services/testCasesController'
 
 
 const List = () => {

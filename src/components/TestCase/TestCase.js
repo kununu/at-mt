@@ -1,21 +1,24 @@
-import axios from 'axios'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import React, {useState, useEffect} from 'react'
 import Table from 'react-bootstrap/Table'
+import itemsService from '../../services/testCasesController'
 
 
 const TestCase = (props) => {
   const [state, setState] = useState([])
+  const testCase = props.items ? props.items : state
 
   useEffect(() => {
-    axios
-      .get(`http://localhost:3001/test-cases/${props.id}`)
-      .then(response => {
-        setState(response.data)
+    itemsService
+      .getById(props.id)
+      .then(initialItems => {
+        setState(initialItems)
+      })
+      .catch(error => {
+          console.log(`Fail to load test cases with id ${testCase.id}`)
       })
   }, [setState])
-  const testCase = props.items ? props.items : state
 
   return (
       <Card>
@@ -29,13 +32,13 @@ const TestCase = (props) => {
           </Card.Title>
         <h4>Created at: {testCase.date}</h4>
         <h4>E2E Link:
-            <a href={testCase['e2e link']}>
-             {testCase['e2e link']}
+            <a href={testCase.e2e_link}>
+             {testCase.e2e_link}
             </a>
         </h4>
         <h4>JIRA link:
-          <a href={testCase['jira link']}>
-            {testCase['jira link']}
+          <a href={testCase.jira_link}>
+            {testCase.jira_link}
           </a>
         </h4>
         <h2>Description: {testCase.description}</h2>
@@ -53,8 +56,8 @@ const TestCase = (props) => {
           <tbody>
             <tr>
                 <th>1</th>
-                <th>{testCase['test steps']}</th>
-                <th>{testCase['test data']}</th>
+                <th>{testCase.test_steps}</th>
+                <th>{testCase.test_data}</th>
                 <th>{testCase.expected}</th>
               </tr>
           </tbody>
