@@ -1,16 +1,17 @@
 import React, {useState, useEffect} from 'react';
 import Card from 'react-bootstrap/Card';
 import ListGroup from 'react-bootstrap/ListGroup';
-import axios from 'axios';
+import {Row, Col} from 'react-bootstrap';
+import ticketsService from '../../services/ticketsController';
 
-const TestSuiteList = () => {
+const TicketsList = () => {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    axios
-      .get('http://localhost:3001/test-suites')
-      .then(response => {
-        setItems(response.data);
+    ticketsService
+      .getAll()
+      .then(initialItems => {
+        setItems(initialItems);
       })
   }, [setItems]);
 
@@ -19,7 +20,10 @@ const TestSuiteList = () => {
       <Card>
         <ListGroup>
           {items.map(item =>
-            <ListGroup.Item>Name: {item.name}, Date added: {item.date}</ListGroup.Item>
+            <ListGroup.Item><Row>
+            <Col xs={6}><div><b>{item.ticket}</b><br /> {item.description}</div></Col>
+            <Col xs={6}><div className="float-right">Date added: {item.date}</div></Col>
+          </Row></ListGroup.Item>
           )}
         </ListGroup>
       </Card>
@@ -31,4 +35,4 @@ const TestSuiteList = () => {
   )
 }
 
-export default TestSuiteList;
+export default TicketsList;
