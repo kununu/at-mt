@@ -1,51 +1,83 @@
-import React, { useState } from 'react'
-import itemsService from '../../services/items'
+import React, {useState} from 'react';
+import Button from 'react-bootstrap/Button';
+import Modal from 'react-bootstrap/Modal';
+import Card from 'react-bootstrap/Card';
+import Form from 'react-bootstrap/Form';
+import itemsService from '../../services/items';
 
+const ProjectsForm = (props) => {
+  const [state, setState] = useState({item: {name:''}, show: false});
 
-const Form = () => {
-  const [newItem, setNewItem] = useState()
+  const handleClose = () => setState({
+    ...state,
+    show: false
+  });
 
-  function refreshPage() {
-    window.location.reload(false);
-}
+  const handleShow = () => setState({
+    ...state,
+    show: true
+  })
 
-  const addItem = (event) => {
-    event.preventDefault()
-    const itemObject = {
-      name: newItem,
-      date: new Date().toISOString(),
-      description: "Test description"
-    }
+  const handleItemsChange = event => {
+    const value = event.target.value
+    setState({
+      ...state,
+      item: {
+        [event.target.name]: value
+      }
+    });
+  };
+
+  const submitItem = (event) => {
+    const item = {
+      name: state.item.name,
+      date: new Date().toISOString()
+    };
+
+    event.preventDefault();
+
     itemsService
-      .create(itemObject)
-      .then(response => {
-        refreshPage()
-      })
-      .catch(error => {
-        console.log('Failed to add item')
-      })
-  }
+      .create(item)
+      .then(() => props.triggerUpdate())
+      .catch(error => console.log(error));
 
-  const handleItemsChange = (event) => {
-    setNewItem(event.target.value)
+    setState({
+      ...state,
+      show: false
+    });
   }
 
   return (
-    <div>
-      <div>
-        <h3>Test plans list</h3>
-        <form className="input-group mb-3" onSubmit={addItem}>
-          <input
-            value={newItem}
-            onChange={handleItemsChange}
-            type="name" />
-          <button type="submit">Add</button>
-        </form>
-      </div>
-      <div>
-      </div>
-    </div>
-  )
-}
+    <>
+      <Button variant="primary" className="float-right" size="sm" onClick={handleShow}>
+        Add Test Plan
+      </Button>
+      <Modal show={state.show} onHide={handleClose}>
+        <Form onSubmit={submitItem}>
+          <Modal.Header closeButton>
+            <Modal.Title>Add Test Plan</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Card.Title>Create New Test Plan</Card.Title>
+            <Form.Group controlId="formSuiteName">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Test Plan Name"
+                name="name"
+                value={state.itemName}
+                onChange={handleItemsChange}
+              />
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>Close</Button>
+            <Button variant="primary" type="submit">Save changes</Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
+    </>
+  );
+};
 
-export default Form;
+export default ProjectsForm;

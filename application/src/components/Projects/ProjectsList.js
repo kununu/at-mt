@@ -1,74 +1,64 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react';
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import ListGroup from 'react-bootstrap/ListGroup';
+import Row from 'react-bootstrap/Row';
+import ProjectsForm from './ProjectsForm';
 import itemsService from '../../services/items'
 
+class TestPlanList extends React.Component {
+  constructor() {
+    super();
+    this.state = { items: [], showForm: false }
+    this.updateHandler = this.updateHandler.bind(this)
+  }
 
-const List = () => {
+  componentDidMount() {
+    this.fetchData();
+  }
 
-    const [items, setItems] = useState([])
+  componentDidUpdate() {
+    // this.fetchData();
+  }
 
-    useEffect(() => {
-        itemsService
-            .getAll()
-            .then(initialItems => {
-                setItems(initialItems)
-            })
-            .catch(error => {
-                console.log('Fail')
-            })
-    }, [setItems])
+  fetchData() {
+    itemsService
+      .getAll()
+      .then(initialItems => {
+        this.setState({...this.state, items: initialItems});
+      })
+      .catch(error => {
+        console.log('Fail');
+      });
+  }
 
-    const toggleImportanceOf = (id) => {
-        const item = items.find(n => n.id === id)
-        const changedItem = { ...item, current: !item.current }
+  updateHandler() {
+    this.fetchData();
+  }
 
-        itemsService
-            .update(id, changedItem)
-            .then(returnedItem => {
-                setItems(
-                    items.map(item => item.id !== id ? item : returnedItem)
-                )
-            })
-            .catch(error => {
-                console.log('Fail')
-            })
+  render() {
+    if (Array.isArray(this.state.items) && this.state.items.length) {
+      return (
+        <Card border={'primary'}>
+          <Card.Header>
+            <Row>
+              <Col xs={6} as="h3">Test Plans</Col>
+              <Col xs={6}><ProjectsForm triggerUpdate={this.updateHandler} /></Col>
+            </Row>
+          </Card.Header>
+          <ListGroup>
+            {this.state.items.map(item =>
+              <ListGroup.Item>Id: {item.id}, Name: {item.name}, Date added: {item.date}</ListGroup.Item>
+            )}
+          </ListGroup>
+        </Card>
+      )
     }
-
-    const removeItem = (id) => {
-        itemsService
-            .remove(id)
-            .then(response => {
-                console.log(response)
-            })
-            .catch(error => {
-                console.log('Failed to remove item')
-            })
-    }
-
-    if (items !== '') {
-        return (
-            <div>
-                <ul>
-                    {items.map(items =>
-                        <Items
-                            key={items.id}
-                            items={items}
-                            toggleImportance={() => toggleImportanceOf(items.id)}
-                            removeItem={() => removeItem(items.id)} />
-                    )}
-                </ul>
-            </div>
-        )
-    }
-}
-
-const Items = ({ items, toggleImportance, removeItem }) => {
-    const labelToggle = items.current
-        ? 'Current' : 'Not current'
-    const labelRemove = "Delete"
 
     return (
-        <a href="home" className="list-group-item list-group-item-action">ID: {items.id} , Name: {items.name}  , Date added: {items.date}, Description: {items.description} <button onClick={toggleImportance}>{labelToggle}</button> <button onClick={removeItem}>{labelRemove}</button></a>
+      <div>No Test Plans in the Database!</div>
     )
+  }
 }
 
-export default List;
+export default TestPlanList;
