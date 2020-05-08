@@ -1,21 +1,29 @@
-import React, {useState} from 'react'
-import axios from 'axios'
+import React, { useState } from 'react'
+import itemsService from '../../services/items'
 
 
 const Form = () => {
   const [newItem, setNewItem] = useState()
 
+  function refreshPage() {
+    window.location.reload(false);
+}
+
   const addItem = (event) => {
     event.preventDefault()
     const itemObject = {
       name: newItem,
-      date: new Date().toISOString()
+      date: new Date().toISOString(),
+      description: "Test description"
     }
-    axios
-    .post('http://localhost:3001/projects', itemObject)
-    .then(response => {
-      console.log(response)
-    })
+    itemsService
+      .create(itemObject)
+      .then(response => {
+        refreshPage()
+      })
+      .catch(error => {
+        console.log('Failed to add item')
+      })
   }
 
   const handleItemsChange = (event) => {
@@ -30,7 +38,7 @@ const Form = () => {
           <input
             value={newItem}
             onChange={handleItemsChange}
-            type="name"/>
+            type="name" />
           <button type="submit">Add</button>
         </form>
       </div>
