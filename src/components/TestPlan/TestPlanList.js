@@ -1,44 +1,62 @@
-import React, { useState, useEffect } from 'react';
-import Button from 'react-bootstrap/Button';
+import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Row from 'react-bootstrap/Row'
+import Row from 'react-bootstrap/Row';
 import axios from 'axios';
+import TestPlanFormModal from '../TestPlan/TestPlanForm';
 
-const TestPlanList = () => {
+class TestPlanList extends React.Component
+{
+  constructor() {
+    super();
+    this.state = { items: [], showForm: false }
+    this.updateHandler = this.updateHandler.bind(this)
+  }
 
-  const [items, setItems] = useState([])
+  componentDidMount() {
+    this.fetchData();
+  }
 
-  useEffect(() => {
+  componentDidUpdate() {
+    // this.fetchData();
+  }
+
+  fetchData() {
     axios
       .get('http://localhost:3001/projects')
       .then(response => {
-        setItems(response.data)
-      })
-  }, [setItems])
-
-  if (Array.isArray(items) && items.length) {
-    return (
-      <Card>
-        <Card.Header>
-          <Row>
-          <Col xs={6} as="h3">Test Plans</Col>
-          <Col xs={6}><Button className="float-right" size="sm">Add Test Plan</Button></Col>
-          </Row>
-        </Card.Header>
-        <ListGroup>
-          {items.map(item =>
-            <ListGroup.Item>Id: {item.id}, Name: {item.name}, Date added: {item.date}</ListGroup.Item>
-          )}
-        </ListGroup>
-      </Card>
-    )
+        this.setState({ ...this.state, items: response.data})
+      });
   }
 
-  return (
-    <div>No Test Plans in the Database!</div>
-  )
+  updateHandler() {
+    this.fetchData();
+  }
+
+  render() {
+    if(Array.isArray(this.state.items) && this.state.items.length) {
+      return (
+        <Card  border={'primary'}>
+          <Card.Header>
+            <Row>
+            <Col xs={6} as="h3">Test Plans</Col>
+            <Col xs={6}><TestPlanFormModal triggerUpdate={this.updateHandler} /></Col>
+            </Row>
+          </Card.Header>
+          <ListGroup>
+            {this.state.items.map(item =>
+              <ListGroup.Item>Id: {item.id}, Name: {item.name}, Date added: {item.date}</ListGroup.Item>
+            )}
+          </ListGroup>
+        </Card>
+      )
+    }
+
+    return (
+      <div>No Test Plans in the Database!</div>
+    )
+  }
 }
 
 export default TestPlanList;
