@@ -6,7 +6,7 @@ import Form from 'react-bootstrap/Form';
 import itemsService from '../../services/items';
 
 const ProjectsForm = (props) => {
-  const [state, setState] = useState({item: {name:''}, show: false});
+  const [state, setState] = useState({item: {name:'', description: ''}, show: false});
 
   const handleClose = () => setState({
     ...state,
@@ -23,6 +23,7 @@ const ProjectsForm = (props) => {
     setState({
       ...state,
       item: {
+        ...state.item,
         [event.target.name]: value
       }
     });
@@ -31,6 +32,7 @@ const ProjectsForm = (props) => {
   const submitItem = (event) => {
     const item = {
       name: state.item.name,
+      description: state.item.description,
       date: new Date().toISOString()
     };
 
@@ -50,22 +52,32 @@ const ProjectsForm = (props) => {
   return (
     <>
       <Button variant="primary" className="float-right" size="sm" onClick={handleShow}>
-        Add Test Plan
+        Add Project
       </Button>
       <Modal show={state.show} onHide={handleClose}>
         <Form onSubmit={submitItem}>
           <Modal.Header closeButton>
-            <Modal.Title>Add Test Plan</Modal.Title>
+            <Modal.Title>Add Project</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Card.Title>Create New Test Plan</Card.Title>
-            <Form.Group controlId="formSuiteName">
+            <Card.Title>Create New Project</Card.Title>
+            <Form.Group controlId="formProjectName">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Test Plan Name"
+                placeholder="Project Name"
                 name="name"
-                value={state.itemName}
+                value={state.item.name}
+                onChange={handleItemsChange}
+              />
+            </Form.Group>
+            <Form.Group>
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Project Name"
+                name="description"
+                value={state.item.description}
                 onChange={handleItemsChange}
               />
             </Form.Group>

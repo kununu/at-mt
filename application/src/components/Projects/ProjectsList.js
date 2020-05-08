@@ -42,13 +42,18 @@ class TestPlanList extends React.Component {
         <Card border={'primary'}>
           <Card.Header>
             <Row>
-              <Col xs={6} as="h3">Test Plans</Col>
+              <Col xs={6} as="h3">Projects</Col>
               <Col xs={6}><ProjectsForm triggerUpdate={this.updateHandler} /></Col>
             </Row>
           </Card.Header>
           <ListGroup>
             {this.state.items.map(item =>
-              <ListGroup.Item>Id: {item.id}, Name: {item.name}, Date added: {item.date}</ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col xs={6}><div><b>{item.name}</b><br /> {item.description}</div></Col>
+                  <Col xs={6}><div className="float-right">Date added: {item.date}</div></Col>
+                </Row>
+              </ListGroup.Item>
             )}
           </ListGroup>
         </Card>
@@ -56,7 +61,7 @@ class TestPlanList extends React.Component {
     }
 
     return (
-      <div>No Test Plans in the Database!</div>
+      <div>Projects</div>
     )
   }
 }
