@@ -47,7 +47,7 @@ const TestCaseList = (props) => {
                             <ListGroup.Item  variant='light'>
                                 <Button className="list-group-item list-group-item-action"
                                     onClick={() => props.viewFullCase('fullCase', items.id)}>
-                                    Id: {items.id} , Name: {items.name}  , Date added: {items.date} Description: {items.description}
+                                    Id: {items.id} , Name: {items.name}  , Date added: {items.date} Description: {items.short_description}
                                 </Button>
                                 <Button
                                     onClick={() => props.viewForm('form', items.id, items)}

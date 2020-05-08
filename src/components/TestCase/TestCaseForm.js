@@ -7,7 +7,7 @@ const TestCaseForm = (props) => {
   const {testCase} = props
   const[state, setNewTestCase] = useState({
     name: testCase.name || '',
-    description: testCase.short_description || '',
+    short_description: testCase.short_description || '',
     test_steps: testCase.test_steps || '',
     test_data: testCase.test_data || '',
     e2e_link: testCase.e2e_link || '',
@@ -19,7 +19,7 @@ const TestCaseForm = (props) => {
     const testcase = {
       name: state.name,
       date: new Date().toDateString(),
-      description: state.description,
+      short_description: state.short_description,
       test_steps: state.test_steps,
       test_data: state.test_data,
       e2e_link: state.e2e_link,
@@ -27,12 +27,12 @@ const TestCaseForm = (props) => {
     }
     itemsService
       .create(testcase)
-      .then(response => {
-        console.log(response.data)
+      .then(() => {
+        console.log('succesfully created')
       })
       .then(props.viewList)
       .catch(error => {
-        console.log('Failed to create test case')
+        console.log(`Failed to create test case: ${error}`)
       })
   }
 
@@ -41,7 +41,7 @@ const TestCaseForm = (props) => {
     const testcase = {
       name: state.name,
       date: new Date().toDateString(),
-      description: state.description,
+      short_description: state.short_description,
       test_steps: state.test_steps,
       test_data: state.test_data,
       e2e_link: state.e2e_link,
@@ -49,14 +49,16 @@ const TestCaseForm = (props) => {
     }
     itemsService
       .update(testCase.id, testcase)
+      .then(() =>
+        console.log('succesfully updated'))
       .then(props.viewList)
       .catch(error => {
-        console.log(`Failed to update test case for ${testCase.id}`)
+        console.log(`Failed to update test case for ${testCase.id}: ${error}`)
       })
   }
 
   const handleSubmit = () => {
-    return (!props) ? addNewTestCase : updateTestCase
+    return (testCase.id) ? updateTestCase() : addNewTestCase()
   }
 
   const handleChange =  e => {
