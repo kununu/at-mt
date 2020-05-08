@@ -49,7 +49,7 @@ testCasesRouter.delete('/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
-testCasesRouter.put(':id', (request, response, next) => {
+testCasesRouter.put('/:id', (request, response, next) => {
     const body = request.body
 
     const testCase = {
